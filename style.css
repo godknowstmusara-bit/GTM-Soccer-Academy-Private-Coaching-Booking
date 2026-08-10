@@ -1,0 +1,2547 @@
+/* =====================================================
+   GTM SOCCER ACADEMY
+   MAIN STYLESHEET
+===================================================== */
+
+:root {
+
+    --green: #087f23;
+    --dark-green: #045916;
+    --light-green: #20c45a;
+
+    --lime: #b9f227;
+
+    --yellow: #ffd928;
+
+    --dark: #07130b;
+    --dark-2: #0c2114;
+
+    --white: #ffffff;
+    --light: #f4f8f4;
+
+    --gray: #66736b;
+
+    --border: #dce6df;
+
+    --shadow:
+        0 15px 45px rgba(0, 0, 0, 0.10);
+
+    --radius: 20px;
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    font-family:
+        "Montserrat",
+        sans-serif;
+
+    color: var(--dark);
+
+    background:
+        var(--white);
+
+    line-height: 1.6;
+
+}
+
+
+a {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+
+button,
+input,
+select,
+textarea {
+
+    font-family: inherit;
+
+}
+
+
+.container {
+
+    width: min(
+        1150px,
+        92%
+    );
+
+    margin: auto;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+    background:
+        rgba(255,255,255,0.96);
+
+    backdrop-filter:
+        blur(15px);
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.nav-container {
+
+    min-height: 78px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 900;
+
+    font-size: 16px;
+
+    line-height: 1.1;
+
+    color: var(--dark);
+
+}
+
+
+.logo strong {
+
+    display: block;
+
+    color: var(--green);
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.logo-ball {
+
+    font-size: 38px;
+
+}
+
+
+.nav {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+
+}
+
+
+.nav a {
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+        0.3s;
+
+}
+
+
+.nav a:hover {
+
+    color:
+        var(--green);
+
+}
+
+
+.menu-toggle {
+
+    display: none;
+
+    border: none;
+
+    background: none;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+
+    position: relative;
+
+    min-height: 680px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            120deg,
+            #031108,
+            #07561c
+        );
+
+    color: white;
+
+}
+
+
+.hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 80% 40%,
+            rgba(185,242,39,0.18),
+            transparent 35%
+        );
+
+}
+
+
+.hero-content {
+
+    position: relative;
+
+    min-height: 680px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 40px;
+
+}
+
+
+.hero-text {
+
+    max-width: 650px;
+
+}
+
+
+.hero-badge {
+
+    display: inline-flex;
+
+    gap: 8px;
+
+    align-items: center;
+
+    background:
+        rgba(185,242,39,0.13);
+
+    border:
+        1px solid
+        rgba(185,242,39,0.4);
+
+    color:
+        var(--lime);
+
+    padding:
+        9px 15px;
+
+    border-radius:
+        50px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.hero h1 {
+
+    font-size:
+        clamp(
+            42px,
+            6vw,
+            76px
+        );
+
+    line-height: 1.02;
+
+    font-weight: 900;
+
+    margin-bottom: 24px;
+
+}
+
+
+.hero h1 span {
+
+    color:
+        var(--lime);
+
+    display: block;
+
+}
+
+
+.hero p {
+
+    max-width: 620px;
+
+    font-size: 17px;
+
+    color:
+        rgba(255,255,255,0.78);
+
+    margin-bottom: 32px;
+
+}
+
+
+.hero-buttons {
+
+    display: flex;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn {
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 9px;
+
+    border: none;
+
+    cursor: pointer;
+
+    padding:
+        14px 23px;
+
+    border-radius:
+        10px;
+
+    font-weight: 800;
+
+    font-size: 14px;
+
+    transition:
+        transform 0.25s,
+        box-shadow 0.25s,
+        background 0.25s;
+
+}
+
+
+.btn:hover {
+
+    transform:
+        translateY(-3px);
+
+}
+
+
+.btn-primary {
+
+    background:
+        var(--lime);
+
+    color:
+        var(--dark);
+
+    box-shadow:
+        0 10px 25px
+        rgba(185,242,39,0.2);
+
+}
+
+
+.btn-primary:hover {
+
+    background:
+        #caff4c;
+
+}
+
+
+.btn-outline {
+
+    color:
+        white;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.45);
+
+}
+
+
+.btn-outline:hover {
+
+    background:
+        rgba(255,255,255,0.1);
+
+}
+
+
+/* =====================================================
+   HERO BALL
+===================================================== */
+
+.hero-ball {
+
+    position: relative;
+
+    width: 420px;
+
+    height: 420px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.football-large {
+
+    font-size:
+        260px;
+
+    filter:
+        drop-shadow(
+            0 25px 30px
+            rgba(0,0,0,0.35)
+        );
+
+    animation:
+        floatBall 5s ease-in-out infinite;
+
+}
+
+
+@keyframes floatBall {
+
+    0%,
+    100% {
+
+        transform:
+            translateY(0)
+            rotate(0deg);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-18px)
+            rotate(8deg);
+
+    }
+
+}
+
+
+.floating-card {
+
+    position: absolute;
+
+    padding:
+        10px 15px;
+
+    background:
+        rgba(255,255,255,0.96);
+
+    color:
+        var(--dark);
+
+    border-radius:
+        12px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,0.2);
+
+}
+
+
+.floating-card i {
+
+    color:
+        var(--green);
+
+    margin-right: 5px;
+
+}
+
+
+.card-one {
+
+    top: 60px;
+
+    left: 15px;
+
+}
+
+
+.card-two {
+
+    right: 0;
+
+    top: 180px;
+
+}
+
+
+.card-three {
+
+    bottom: 50px;
+
+    left: 25px;
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats {
+
+    background:
+        var(--green);
+
+    color:
+        white;
+
+}
+
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+}
+
+
+.stat {
+
+    padding:
+        28px 15px;
+
+    text-align:
+        center;
+
+    border-right:
+        1px solid
+        rgba(255,255,255,0.15);
+
+}
+
+
+.stat:last-child {
+
+    border-right:
+        none;
+
+}
+
+
+.stat i {
+
+    color:
+        var(--lime);
+
+    font-size: 25px;
+
+    margin-bottom: 7px;
+
+}
+
+
+.stat h3 {
+
+    font-size: 16px;
+
+}
+
+
+.stat p {
+
+    font-size: 12px;
+
+    opacity: 0.75;
+
+}
+
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+.section {
+
+    padding:
+        95px 0;
+
+}
+
+
+.section-label {
+
+    color:
+        var(--green);
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    display: block;
+
+    margin-bottom: 10px;
+
+}
+
+
+.section-heading {
+
+    text-align:
+        center;
+
+    max-width: 700px;
+
+    margin:
+        0 auto 50px;
+
+}
+
+
+.section-heading h2,
+.about-content h2 {
+
+    font-size:
+        clamp(
+            32px,
+            5vw,
+            50px
+        );
+
+    line-height: 1.1;
+
+    margin-bottom: 15px;
+
+    font-weight: 900;
+
+}
+
+
+.section-heading h2 span,
+.about-content h2 span {
+
+    color:
+        var(--green);
+
+}
+
+
+.section-heading p {
+
+    color:
+        var(--gray);
+
+}
+
+
+/* =====================================================
+   ABOUT
+===================================================== */
+
+.about {
+
+    background:
+        var(--light);
+
+}
+
+
+.two-column {
+
+    display: grid;
+
+    grid-template-columns:
+        1.1fr 0.9fr;
+
+    gap: 70px;
+
+    align-items:
+        center;
+
+}
+
+
+.about-content p {
+
+    color:
+        var(--gray);
+
+    margin-bottom: 17px;
+
+}
+
+
+.about-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 25px;
+
+}
+
+
+.about-list div {
+
+    display: flex;
+
+    gap: 9px;
+
+    align-items:
+        center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.about-list i {
+
+    color:
+        var(--green);
+
+}
+
+
+.about-card {
+
+    padding:
+        45px 35px;
+
+    background:
+        white;
+
+    border-radius:
+        var(--radius);
+
+    box-shadow:
+        var(--shadow);
+
+    text-align:
+        center;
+
+}
+
+
+.soccer-circle {
+
+    width: 110px;
+
+    height: 110px;
+
+    margin:
+        0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--green);
+
+    font-size: 60px;
+
+}
+
+
+.about-card h3 {
+
+    font-size: 24px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.about-card > p {
+
+    color:
+        var(--gray);
+
+    margin-bottom: 25px;
+
+}
+
+
+.mini-feature {
+
+    display: flex;
+
+    align-items:
+        center;
+
+    text-align:
+        left;
+
+    gap: 14px;
+
+    padding:
+        14px;
+
+    border-radius:
+        12px;
+
+    background:
+        var(--light);
+
+    margin-top: 10px;
+
+}
+
+
+.mini-feature i {
+
+    font-size: 20px;
+
+    color:
+        var(--green);
+
+}
+
+
+.mini-feature strong,
+.mini-feature span {
+
+    display: block;
+
+}
+
+
+.mini-feature strong {
+
+    font-size: 13px;
+
+}
+
+
+.mini-feature span {
+
+    color:
+        var(--gray);
+
+    font-size: 11px;
+
+}
+
+
+/* =====================================================
+   ACTIVITIES
+===================================================== */
+
+.training-section {
+
+    background:
+        white;
+
+}
+
+
+.activities-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+}
+
+
+.activity-card {
+
+    padding:
+        28px 20px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        15px;
+
+    transition:
+        0.3s;
+
+}
+
+
+.activity-card:hover {
+
+    transform:
+        translateY(-7px);
+
+    box-shadow:
+        var(--shadow);
+
+    border-color:
+        var(--light-green);
+
+}
+
+
+.activity-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    display: flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        #e9f8ed;
+
+    color:
+        var(--green);
+
+    border-radius:
+        12px;
+
+    font-size: 20px;
+
+    margin-bottom: 17px;
+
+}
+
+
+.activity-card h3 {
+
+    font-size: 16px;
+
+    margin-bottom: 7px;
+
+}
+
+
+.activity-card p {
+
+    font-size: 12px;
+
+    color:
+        var(--gray);
+
+}
+
+
+/* =====================================================
+   PACKAGES
+===================================================== */
+
+.packages {
+
+    background:
+        var(--light);
+
+}
+
+
+.packages-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 25px;
+
+}
+
+
+.package-card {
+
+    position: relative;
+
+    background:
+        white;
+
+    padding:
+        35px 28px;
+
+    border-radius:
+        var(--radius);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,0.06);
+
+    border:
+        1px solid
+        var(--border);
+
+}
+
+
+.package-card.featured {
+
+    border:
+        2px solid
+        var(--green);
+
+    transform:
+        translateY(-10px);
+
+}
+
+
+.popular {
+
+    position: absolute;
+
+    top: -13px;
+
+    right: 20px;
+
+    background:
+        var(--green);
+
+    color:
+        white;
+
+    padding:
+        5px 12px;
+
+    border-radius:
+        50px;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+}
+
+
+.package-icon {
+
+    font-size: 40px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.package-card h3 {
+
+    font-size: 22px;
+
+}
+
+
+.price {
+
+    color:
+        var(--green);
+
+    font-size: 36px;
+
+    font-weight: 900;
+
+    margin:
+        10px 0;
+
+}
+
+
+.price small {
+
+    font-size: 11px;
+
+    color:
+        var(--gray);
+
+    font-weight: 500;
+
+}
+
+
+.package-card > p {
+
+    color:
+        var(--gray);
+
+    font-size: 13px;
+
+    min-height: 42px;
+
+}
+
+
+.package-card ul {
+
+    list-style: none;
+
+    margin:
+        20px 0;
+
+}
+
+
+.package-card li {
+
+    padding:
+        6px 0;
+
+    font-size: 12px;
+
+}
+
+
+.package-card li i {
+
+    color:
+        var(--green);
+
+    margin-right: 7px;
+
+}
+
+
+.package-btn {
+
+    width: 100%;
+
+}
+
+
+/* =====================================================
+   BOOKING
+===================================================== */
+
+.booking-section {
+
+    background:
+        white;
+
+}
+
+
+.booking-wrapper {
+
+    display: grid;
+
+    grid-template-columns:
+        0.75fr 1.25fr;
+
+    gap: 40px;
+
+    align-items:
+        start;
+
+}
+
+
+.booking-info {
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--dark-green),
+            var(--green)
+        );
+
+    color:
+        white;
+
+    padding:
+        40px 32px;
+
+    border-radius:
+        var(--radius);
+
+    position: sticky;
+
+    top: 100px;
+
+}
+
+
+.booking-info-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    display: flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        14px;
+
+    background:
+        var(--lime);
+
+    color:
+        var(--dark);
+
+    font-size: 23px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.booking-info h3 {
+
+    font-size: 27px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.booking-info > p {
+
+    color:
+        rgba(255,255,255,0.75);
+
+    font-size: 13px;
+
+    margin-bottom: 30px;
+
+}
+
+
+.booking-feature {
+
+    display: flex;
+
+    align-items:
+        center;
+
+    gap: 14px;
+
+    padding:
+        15px 0;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.15);
+
+}
+
+
+.booking-feature i {
+
+    color:
+        var(--lime);
+
+    font-size: 18px;
+
+}
+
+
+.booking-feature strong,
+.booking-feature span {
+
+    display: block;
+
+}
+
+
+.booking-feature strong {
+
+    font-size: 13px;
+
+}
+
+
+.booking-feature span {
+
+    font-size: 11px;
+
+    color:
+        rgba(255,255,255,0.7);
+
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.booking-form {
+
+    padding:
+        35px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius);
+
+    box-shadow:
+        var(--shadow);
+
+}
+
+
+.form-row {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+
+}
+
+
+.form-group {
+
+    margin-bottom: 20px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    margin-bottom: 7px;
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    border:
+        1px solid
+        var(--border);
+
+    background:
+        #fbfdfb;
+
+    padding:
+        13px 14px;
+
+    border-radius:
+        10px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    transition:
+        0.25s;
+
+}
+
+
+.form-group textarea {
+
+    resize:
+        vertical;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color:
+        var(--green);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(8,127,35,0.1);
+
+}
+
+
+/* =====================================================
+   SESSION OPTIONS
+===================================================== */
+
+.session-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+}
+
+
+.session-option {
+
+    position: relative;
+
+    display: flex;
+
+    align-items:
+        center;
+
+    gap: 10px;
+
+    padding:
+        15px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        10px;
+
+    cursor:
+        pointer;
+
+}
+
+
+.session-option input {
+
+    position: absolute;
+
+    opacity: 0;
+
+}
+
+
+.session-option:has(input:checked) {
+
+    border-color:
+        var(--green);
+
+    background:
+        #edf9ef;
+
+}
+
+
+.session-check {
+
+    width: 17px;
+
+    height: 17px;
+
+    border:
+        2px solid
+        #b7c6bb;
+
+    border-radius:
+        50%;
+
+}
+
+
+.session-option input:checked
+~ .session-check {
+
+    border:
+        5px solid
+        var(--green);
+
+}
+
+
+.session-option strong,
+.session-option small {
+
+    display: block;
+
+}
+
+
+.session-option strong {
+
+    font-size: 12px;
+
+}
+
+
+.session-option small {
+
+    color:
+        var(--green);
+
+    font-weight: 900;
+
+    font-size: 12px;
+
+}
+
+
+/* =====================================================
+   BOOKING SUMMARY
+===================================================== */
+
+.booking-summary {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 20px;
+
+    background:
+        #edf9ef;
+
+    border:
+        1px solid
+        #d1ebd6;
+
+    padding:
+        17px;
+
+    border-radius:
+        12px;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.booking-summary span,
+.booking-summary strong {
+
+    display: block;
+
+}
+
+
+.booking-summary span {
+
+    font-size: 10px;
+
+    text-transform:
+        uppercase;
+
+    color:
+        var(--gray);
+
+    font-weight: 800;
+
+}
+
+
+.booking-summary strong {
+
+    color:
+        var(--green);
+
+    font-size: 15px;
+
+}
+
+
+.booking-form .submit-btn {
+
+    width: 100%;
+
+}
+
+
+.booking-note {
+
+    text-align:
+        center;
+
+    color:
+        var(--gray);
+
+    font-size: 10px;
+
+    margin-top: 12px;
+
+}
+
+
+.booking-note i {
+
+    color:
+        var(--green);
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 2000;
+
+    display: none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,0.72);
+
+}
+
+
+.modal.show {
+
+    display: flex;
+
+}
+
+
+.modal-content {
+
+    position: relative;
+
+    width: min(
+        500px,
+        100%
+    );
+
+    background:
+        white;
+
+    padding:
+        38px;
+
+    border-radius:
+        22px;
+
+    text-align:
+        center;
+
+    max-height:
+        90vh;
+
+    overflow-y:
+        auto;
+
+}
+
+
+.modal-close {
+
+    position: absolute;
+
+    top: 15px;
+
+    right: 17px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+}
+
+
+.success-icon {
+
+    width: 70px;
+
+    height: 70px;
+
+    margin:
+        0 auto 17px;
+
+    border-radius:
+        50%;
+
+    background:
+        #e8f8eb;
+
+    color:
+        var(--green);
+
+    display: flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size: 30px;
+
+}
+
+
+.modal-content h2 {
+
+    margin-bottom:
+        5px;
+
+}
+
+
+.modal-content > p {
+
+    color:
+        var(--gray);
+
+    font-size: 13px;
+
+}
+
+
+.confirmation-details {
+
+    margin:
+        25px 0;
+
+    text-align:
+        left;
+
+}
+
+
+.confirmation-item {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 15px;
+
+    padding:
+        9px 0;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+}
+
+
+.confirmation-item span {
+
+    color:
+        var(--gray);
+
+    font-size: 11px;
+
+}
+
+
+.confirmation-item strong {
+
+    font-size: 12px;
+
+    text-align:
+        right;
+
+}
+
+
+/* =====================================================
+   CONTACT
+===================================================== */
+
+.contact-section {
+
+    padding-top:
+        60px;
+
+}
+
+
+.contact-box {
+
+    overflow:
+        hidden;
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 0.4fr;
+
+    background:
+        linear-gradient(
+            120deg,
+            var(--dark),
+            var(--dark-green)
+        );
+
+    color:
+        white;
+
+    border-radius:
+        25px;
+
+    padding:
+        55px;
+
+}
+
+
+.contact-content {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.contact-content .section-label {
+
+    color:
+        var(--lime);
+
+}
+
+
+.contact-content h2 {
+
+    font-size:
+        clamp(
+            30px,
+            5vw,
+            50px
+        );
+
+    line-height:
+        1.1;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.contact-content > p {
+
+    max-width:
+        600px;
+
+    color:
+        rgba(255,255,255,0.7);
+
+}
+
+
+.contact-details {
+
+    display: flex;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+
+    margin:
+        30px 0;
+
+}
+
+
+.contact-item {
+
+    display: flex;
+
+    align-items:
+        center;
+
+    gap: 12px;
+
+}
+
+
+.contact-item i {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(255,255,255,0.1);
+
+    border-radius:
+        10px;
+
+    color:
+        var(--lime);
+
+}
+
+
+.contact-item span,
+.contact-item strong {
+
+    display: block;
+
+}
+
+
+.contact-item span {
+
+    color:
+        rgba(255,255,255,0.6);
+
+    font-size: 10px;
+
+}
+
+
+.contact-item strong {
+
+    font-size: 12px;
+
+}
+
+
+.btn-whatsapp {
+
+    background:
+        #25d366;
+
+    color:
+        white;
+
+}
+
+
+.btn-whatsapp:hover {
+
+    background:
+        #1fbd59;
+
+}
+
+
+.contact-ball {
+
+    display: flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        190px;
+
+    opacity:
+        0.9;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+
+    background:
+        #020a05;
+
+    color:
+        white;
+
+    margin-top:
+        70px;
+
+}
+
+
+.footer-content {
+
+    padding:
+        45px 0;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 30px;
+
+}
+
+
+.footer-logo {
+
+    font-weight:
+        900;
+
+    margin-bottom:
+        7px;
+
+}
+
+
+.footer-content p {
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size:
+        12px;
+
+}
+
+
+.footer-links {
+
+    display: flex;
+
+    gap: 20px;
+
+    align-items:
+        center;
+
+}
+
+
+.footer-links a {
+
+    font-size:
+        12px;
+
+    color:
+        rgba(255,255,255,0.65);
+
+}
+
+
+.footer-links a:hover {
+
+    color:
+        var(--lime);
+
+}
+
+
+.footer-bottom {
+
+    text-align:
+        center;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    padding:
+        18px;
+
+}
+
+
+.footer-bottom p {
+
+    color:
+        rgba(255,255,255,0.45);
+
+    font-size:
+        10px;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE TABLET
+===================================================== */
+
+@media (
+    max-width: 950px
+) {
+
+    .hero-ball {
+
+        width: 300px;
+
+        height: 300px;
+
+    }
+
+
+    .football-large {
+
+        font-size: 190px;
+
+    }
+
+
+    .activities-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .packages-grid {
+
+        grid-template-columns:
+            1fr;
+
+        max-width: 600px;
+
+        margin:
+            auto;
+
+    }
+
+
+    .package-card.featured {
+
+        transform:
+            none;
+
+    }
+
+
+    .booking-wrapper {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .booking-info {
+
+        position:
+            static;
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (
+    max-width: 700px
+) {
+
+    .nav {
+
+        position:
+            absolute;
+
+        top: 78px;
+
+        left: 0;
+
+        right: 0;
+
+        display: none;
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        gap: 0;
+
+        background:
+            white;
+
+        border-bottom:
+            1px solid
+            var(--border);
+
+        box-shadow:
+            0 15px 30px
+            rgba(0,0,0,0.08);
+
+    }
+
+
+    .nav.active {
+
+        display:
+            flex;
+
+    }
+
+
+    .nav a {
+
+        padding:
+            15px 5%;
+
+        border-bottom:
+            1px solid
+            var(--border);
+
+    }
+
+
+    .menu-toggle {
+
+        display:
+            block;
+
+    }
+
+
+    .hero {
+
+        min-height:
+            auto;
+
+    }
+
+
+    .hero-content {
+
+        min-height:
+            auto;
+
+        padding:
+            80px 0;
+
+        flex-direction:
+            column;
+
+        text-align:
+            center;
+
+    }
+
+
+    .hero-buttons {
+
+        justify-content:
+            center;
+
+    }
+
+
+    .hero-ball {
+
+        width: 250px;
+
+        height: 250px;
+
+    }
+
+
+    .football-large {
+
+        font-size:
+            160px;
+
+    }
+
+
+    .floating-card {
+
+        display:
+            none;
+
+    }
+
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .stat:nth-child(2) {
+
+        border-right:
+            none;
+
+    }
+
+
+    .two-column {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            35px;
+
+    }
+
+
+    .about-list {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .activities-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .form-row {
+
+        grid-template-columns:
+            1fr;
+
+        gap: 0;
+
+    }
+
+
+    .session-options {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .booking-form {
+
+        padding:
+            23px 18px;
+
+    }
+
+
+    .contact-box {
+
+        grid-template-columns:
+            1fr;
+
+        padding:
+            35px 25px;
+
+    }
+
+
+    .contact-ball {
+
+        display:
+            none;
+
+    }
+
+
+    .footer-content {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .footer-links {
+
+        flex-wrap:
+            wrap;
+
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (
+    max-width: 420px
+) {
+
+    .hero h1 {
+
+        font-size:
+            39px;
+
+    }
+
+
+    .section {
+
+        padding:
+            70px 0;
+
+    }
+
+
+    .booking-summary {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .contact-details {
+
+        flex-direction:
+            column;
+
+    }
+
+}
