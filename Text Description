@@ -1,0 +1,181 @@
+# ⚽ GTM Soccer Academy
+
+## Private Soccer Coaching Website
+
+GTM Soccer Academy is a professional, responsive website designed for private soccer coaching sessions for primary school boys who want to improve their football skills, confidence, fitness, and chances of competing for a place in their school first team.
+
+The platform allows parents or guardians to learn about the coaching services, select a training package, choose an available date and time, provide player information, and submit a booking online.
+
+---
+
+## 🌟 Features
+
+- ⚽ Professional soccer academy landing page
+- 📱 Fully responsive mobile-friendly design
+- 📅 Online training session booking
+- ⏰ Dynamic available time slots
+- 🔒 Automatic prevention of overlapping bookings
+- 👨‍👩‍👦 Parent/guardian information
+- 👦 Player information and age
+- 📍 Home or nearest park training locations
+- 📝 Player development goals and notes
+- 📧 Booking email notifications
+- 📊 Google Sheets booking database
+- ✅ Booking confirmation system
+- 📞 Direct contact information
+- 💬 WhatsApp enquiry functionality
+- 🎨 Modern soccer-themed visual design
+- ⚡ Interactive JavaScript functionality
+
+---
+
+## 💰 Training Packages
+
+### ⚽ 1 Hour — R180
+
+Suitable for focused individual practice.
+
+Training activities may include:
+
+- Ball juggling
+- Ball control
+- Dribbling
+- Short passing
+- Shooting
+- Basic technical drills
+- Coordination exercises
+
+---
+
+### ⚽ 1 Hour 30 Minutes — R270
+
+A longer development session combining technical and physical training.
+
+Training activities may include:
+
+- Ball mastery
+- Ball control
+- Dribbling
+- Short and long passing
+- Shooting
+- Endurance
+- Agility
+- Technical drills
+- Positioning
+
+---
+
+### ⚽ 2 Hours — R350
+
+A comprehensive private development session.
+
+Training activities may include:
+
+- Ball juggling
+- Ball mastery
+- First touch
+- Ball control
+- Dribbling
+- Short passing
+- Long passing
+- Shooting
+- Endurance
+- Agility
+- Speed drills
+- Match-style exercises
+- Position-specific development
+
+---
+
+## 🎯 Coaching Objective
+
+The goal of GTM Soccer Academy is to provide young players with additional individual practice outside their normal school football environment.
+
+The sessions are designed to help players develop:
+
+- Better ball control
+- Stronger passing ability
+- Improved shooting technique
+- Better dribbling
+- Increased endurance
+- Improved coordination
+- Greater confidence
+- Better understanding of football fundamentals
+- Improved preparation for school team trials
+
+The ultimate objective is to help young players become more confident and competitive when pursuing a position in their school football first team.
+
+---
+
+## 📅 Booking System
+
+The website includes an online booking system connected to Google Apps Script and Google Sheets.
+
+Parents can:
+
+1. Select a training package.
+2. Select a preferred date.
+3. View available time slots.
+4. Enter parent/guardian information.
+5. Enter player information.
+6. Select the training location.
+7. Describe the player's development goals.
+8. Submit the booking.
+9. Receive a booking confirmation.
+
+The system checks existing bookings and prevents overlapping sessions from being booked.
+
+---
+
+## 🕐 Training Availability
+
+Standard training hours:
+
+**08:00 – 18:00**
+
+Available booking start times are generated in 30-minute intervals.
+
+The system automatically calculates the required end time based on the selected training package.
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+- Responsive Web Design
+
+### Backend / Integration
+
+- Google Apps Script
+- Google Sheets
+- Google Apps Script Web App
+- Email notifications
+
+### Development & Deployment
+
+- CodePen
+- GitHub
+- GitHub Pages
+
+---
+
+## 🔄 Booking System Architecture
+
+```text
+Parent / Guardian
+        ↓
+GTM Soccer Academy Website
+        ↓
+JavaScript Booking System
+        ↓
+Google Apps Script Web App
+        ↓
+Google Sheets
+        ↓
+Booking Record
+        ↓
+Email Notification
