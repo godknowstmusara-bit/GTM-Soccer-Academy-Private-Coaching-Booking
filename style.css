@@ -2291,3 +2291,35 @@ section {
     }
 
 }
+/* =========================================================
+   WEBSITE DESIGNER CREDIT
+========================================================= */
+
+.designer-credit {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: 0.8;
+    letter-spacing: 0.3px;
+}
+
+.designer-credit strong {
+    font-weight: 800;
+    opacity: 1;
+}
+
+.designer-credit span {
+    margin: 0 5px;
+    opacity: 0.6;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .designer-credit {
+        font-size: 11px;
+        line-height: 1.8;
+    }
+
+}
