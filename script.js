@@ -1,1240 +1,1384 @@
 /* =========================================================
    GTM SOCCER ACADEMY
-   PRIVATE SOCCER COACHING BOOKING SYSTEM
-   GOOGLE APPS SCRIPT BACKEND
-   ========================================================= */
+   WEBSITE BOOKING SYSTEM
+   GOOGLE APPS SCRIPT CONNECTION
+========================================================= */
 
 
 /* =========================================================
-   GTM SETTINGS
-   ========================================================= */
+   GOOGLE APPS SCRIPT URL
+========================================================= */
 
-const SHEET_NAME = "Bookings";
-
-const OWNER_EMAIL =
-  "godknowstmusara@gmail.com";
-
-const OWNER_PHONE =
-  "+27622422996";
-
-
-/*
-   Training hours:
-   08:00 - 18:00
-*/
-
-const OPENING_TIME = "08:00";
-const CLOSING_TIME = "18:00";
+const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbxuJG9zxr5LB-RU0G1-mQX4VMx3BUetwLQG6Ur8dYysNX1mYe7M8rO1LDjFMgtKZPPk/exec";
 
 
 /* =========================================================
-   GET REQUEST
-   Used by the website to check available times.
-   ========================================================= */
+   PAGE ELEMENTS
+========================================================= */
 
-function doGet(e) {
+const bookingForm =
+    document.getElementById("bookingForm");
 
-  try {
+const dateInput =
+    document.getElementById("date");
 
-    const action =
-      e && e.parameter
-        ? e.parameter.action
-        : "";
+const timeSelect =
+    document.getElementById("time");
 
+const selectedSession =
+    document.getElementById("selectedSession");
 
-    /*
-       Availability request
-    */
+const selectedPrice =
+    document.getElementById("selectedPrice");
 
-    if (
-      action === "availability"
-    ) {
+const menuToggle =
+    document.getElementById("menuToggle");
 
-      const date =
-        e.parameter.date;
+const nav =
+    document.getElementById("nav");
 
+const successModal =
+    document.getElementById("successModal");
 
-      return jsonResponse(
-        getAvailability(date)
-      );
+const closeModal =
+    document.getElementById("closeModal");
 
-    }
+const modalDone =
+    document.getElementById("modalDone");
 
-
-    /*
-       Test the booking system
-    */
-
-    return jsonResponse({
-
-      success: true,
-
-      message:
-        "GTM Soccer Academy Booking System is working.",
-
-      email:
-        OWNER_EMAIL,
-
-      phone:
-        OWNER_PHONE
-
-    });
+const confirmationDetails =
+    document.getElementById("confirmationDetails");
 
 
-  } catch (error) {
+/* =========================================================
+   CURRENT YEAR
+========================================================= */
 
-    return jsonResponse({
+const yearElement =
+    document.getElementById("year");
 
-      success: false,
+if (yearElement) {
 
-      message:
-        error.message
-
-    });
-
-  }
+    yearElement.textContent =
+        new Date().getFullYear();
 
 }
 
 
 /* =========================================================
-   POST REQUEST
-   Used by the website to create a booking.
-   ========================================================= */
+   MOBILE NAVIGATION
+========================================================= */
 
-function doPost(e) {
+if (menuToggle) {
 
-  const lock =
-    LockService.getScriptLock();
+    menuToggle.addEventListener(
+        "click",
+        function () {
 
+            nav.classList.toggle("active");
 
-  try {
+        }
+    );
 
-    /*
-       Prevent two people from booking
-       the same slot simultaneously.
-    */
-
-    lock.waitLock(30000);
+}
 
 
-    if (
-      !e ||
-      !e.postData ||
-      !e.postData.contents
-    ) {
+/* Close mobile menu after clicking a link */
 
-      throw new Error(
-        "No booking information was received."
-      );
+if (nav) {
 
-    }
+    const navLinks =
+        nav.querySelectorAll("a");
+
+    navLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    nav.classList.remove("active");
+
+                }
+            );
+
+        }
+    );
+
+}
 
 
-    const data =
-      JSON.parse(
-        e.postData.contents
-      );
+/* =========================================================
+   TRAINING PACKAGE BUTTONS
+========================================================= */
 
-
-    const result =
-      createBooking(data);
-
-
-    return jsonResponse(
-      result
+const packageButtons =
+    document.querySelectorAll(
+        ".package-btn"
     );
 
 
-  } catch (error) {
+packageButtons.forEach(
+    function (button) {
 
-    return jsonResponse({
+        button.addEventListener(
+            "click",
+            function () {
 
-      success: false,
+                const packageName =
+                    button.dataset.package;
 
-      message:
-        error.message
-
-    });
-
-
-  } finally {
-
-    lock.releaseLock();
-
-  }
-
-}
+                const packagePrice =
+                    button.dataset.price;
 
 
-/* =========================================================
-   CREATE NEW BOOKING
-   ========================================================= */
+                /*
+                   Select the matching
+                   radio button.
+                */
 
-function createBooking(data) {
-
-  /*
-     Required booking fields
-  */
-
-  const requiredFields = [
-
-    "parentName",
-    "phone",
-    "playerName",
-    "age",
-    "session",
-    "price",
-    "date",
-    "startTime",
-    "location"
-
-  ];
+                const radio =
+                    document.querySelector(
+                        `input[name="session"][value="${packageName}"]`
+                    );
 
 
-  requiredFields.forEach(
-    function(field) {
+                if (radio) {
 
-      if (
-        !data[field] ||
-        String(data[field]).trim() === ""
-      ) {
+                    radio.checked = true;
 
-        throw new Error(
-          "Please complete the " +
-          field +
-          " field."
+                }
+
+
+                /*
+                   Update summary.
+                */
+
+                updateSessionSummary();
+
+
+                /*
+                   Scroll to booking.
+                */
+
+                const bookingSection =
+                    document.getElementById(
+                        "booking"
+                    );
+
+
+                if (bookingSection) {
+
+                    bookingSection.scrollIntoView({
+
+                        behavior: "smooth"
+
+                    });
+
+                }
+
+            }
         );
 
-      }
-
     }
-  );
-
-
-  /*
-     Get spreadsheet
-  */
-
-  const spreadsheet =
-    SpreadsheetApp
-      .getActiveSpreadsheet();
-
-
-  const sheet =
-    spreadsheet
-      .getSheetByName(
-        SHEET_NAME
-      );
-
-
-  if (!sheet) {
-
-    throw new Error(
-      'The sheet "' +
-      SHEET_NAME +
-      '" could not be found.'
-    );
-
-  }
-
-
-  /*
-     Get session duration
-  */
-
-  const duration =
-    getDuration(
-      data.session
-    );
-
-
-  /*
-     Convert requested start time
-     into minutes.
-  */
-
-  const startMinutes =
-    timeToMinutes(
-      data.startTime
-    );
-
-
-  /*
-     Calculate end time.
-  */
-
-  const endMinutes =
-    startMinutes +
-    duration;
-
-
-  /*
-     Training hours.
-  */
-
-  const openingMinutes =
-    timeToMinutes(
-      OPENING_TIME
-    );
-
-
-  const closingMinutes =
-    timeToMinutes(
-      CLOSING_TIME
-    );
-
-
-  /*
-     Make sure booking is within
-     GTM Soccer Academy's hours.
-  */
-
-  if (
-    startMinutes <
-    openingMinutes
-  ) {
-
-    throw new Error(
-      "The selected time is before the academy's opening time."
-    );
-
-  }
-
-
-  if (
-    endMinutes >
-    closingMinutes
-  ) {
-
-    throw new Error(
-      "The selected session would finish after the academy's closing time."
-    );
-
-  }
-
-
-  /*
-     Check for overlapping bookings.
-  */
-
-  const alreadyBooked =
-    isTimeBooked(
-
-      data.date,
-
-      startMinutes,
-
-      endMinutes
-
-    );
-
-
-  if (alreadyBooked) {
-
-    throw new Error(
-      "Sorry, this time slot has already been booked. Please select another available time."
-    );
-
-  }
-
-
-  /*
-     Generate booking reference.
-  */
-
-  const bookingId =
-    generateBookingId();
-
-
-  /*
-     Calculate end time.
-  */
-
-  const endTime =
-    minutesToTime(
-      endMinutes
-    );
-
-
-  /*
-     Current timestamp.
-  */
-
-  const timestamp =
-    new Date();
-
-
-  /*
-     Add booking to Google Sheet.
-  */
-
-  sheet.appendRow([
-
-    bookingId,
-
-    timestamp,
-
-    data.parentName,
-
-    data.phone,
-
-    data.playerName,
-
-    data.age,
-
-    data.session,
-
-    "R" + data.price,
-
-    data.date,
-
-    data.startTime,
-
-    endTime,
-
-    data.location,
-
-    data.message || "",
-
-    "Confirmed"
-
-  ]);
-
-
-  /*
-     Send email notification.
-  */
-
-  sendBookingEmail(
-
-    data,
-
-    bookingId,
-
-    endTime
-
-  );
-
-
-  /*
-     Return successful result.
-  */
-
-  return {
-
-    success: true,
-
-    bookingId:
-      bookingId,
-
-    endTime:
-      endTime,
-
-    message:
-      "GTM Soccer Academy booking confirmed successfully."
-
-  };
-
-}
+);
 
 
 /* =========================================================
-   GET AVAILABLE BOOKINGS FOR A DATE
-   ========================================================= */
+   SESSION SELECTION
+========================================================= */
 
-function getAvailability(date) {
-
-  if (!date) {
-
-    return {
-
-      success: false,
-
-      message:
-        "Please select a date."
-
-    };
-
-  }
+const sessionRadios =
+    document.querySelectorAll(
+        'input[name="session"]'
+    );
 
 
-  /*
-     Get spreadsheet.
-  */
+sessionRadios.forEach(
+    function (radio) {
 
-  const spreadsheet =
-    SpreadsheetApp
-      .getActiveSpreadsheet();
+        radio.addEventListener(
+            "change",
+            function () {
 
+                updateSessionSummary();
 
-  const sheet =
-    spreadsheet
-      .getSheetByName(
-        SHEET_NAME
-      );
+                /*
+                   Refresh available times
+                   because different sessions
+                   have different durations.
+                */
 
+                loadAvailableTimes();
 
-  if (!sheet) {
+            }
+        );
 
-    return {
-
-      success: false,
-
-      message:
-        'The sheet "' +
-        SHEET_NAME +
-        '" could not be found.'
-
-    };
-
-  }
+    }
+);
 
 
-  /*
-     Get number of rows.
-  */
+/* =========================================================
+   UPDATE SESSION SUMMARY
+========================================================= */
 
-  const lastRow =
-    sheet.getLastRow();
+function updateSessionSummary() {
 
-
-  /*
-     No bookings yet.
-  */
-
-  if (
-    lastRow <= 1
-  ) {
-
-    return {
-
-      success: true,
-
-      date:
-        date,
-
-      bookings: []
-
-    };
-
-  }
-
-
-  /*
-     Read booking rows.
-  */
-
-  const rows =
-    sheet
-      .getRange(
-
-        2,
-
-        1,
-
-        lastRow - 1,
-
-        14
-
-      )
-      .getValues();
-
-
-  const bookings = [];
-
-
-  /*
-     Check every booking.
-  */
-
-  rows.forEach(
-    function(row) {
-
-      /*
-         Column I = Date
-      */
-
-      const bookingDate =
-        formatDate(
-          row[8]
+    const selected =
+        document.querySelector(
+            'input[name="session"]:checked'
         );
 
 
-      /*
-         Column N = Status
-      */
+    if (!selected) {
 
-      const status =
+        selectedSession.textContent =
+            "Please select a session";
+
+        selectedPrice.textContent =
+            "R0";
+
+        return;
+
+    }
+
+
+    selectedSession.textContent =
+        selected.value;
+
+
+    selectedPrice.textContent =
+        "R" +
+        selected.dataset.price;
+
+}
+
+
+/* =========================================================
+   SET MINIMUM BOOKING DATE
+========================================================= */
+
+function setMinimumDate() {
+
+    if (!dateInput) {
+
+        return;
+
+    }
+
+
+    /*
+       Get today's date.
+    */
+
+    const today =
+        new Date();
+
+
+    /*
+       Convert to YYYY-MM-DD.
+    */
+
+    const year =
+        today.getFullYear();
+
+
+    const month =
         String(
-          row[13]
-        ).trim()
-        .toLowerCase();
+            today.getMonth() + 1
+        )
+        .padStart(2, "0");
 
 
-      /*
-         Ignore cancelled bookings.
-      */
-
-      if (
-        bookingDate === date &&
-        status !== "cancelled"
-      ) {
-
-        /*
-           Column J = Start Time
-        */
-
-        const start =
-          timeToMinutes(
-            formatTime(
-              row[9]
-            )
-          );
+    const day =
+        String(
+            today.getDate()
+        )
+        .padStart(2, "0");
 
 
-        /*
-           Column K = End Time
-        */
-
-        const end =
-          timeToMinutes(
-            formatTime(
-              row[10]
-            )
-          );
+    const todayString =
+        `${year}-${month}-${day}`;
 
 
-        bookings.push({
+    dateInput.min =
+        todayString;
 
-          start:
-            start,
+}
 
-          end:
-            end
+
+setMinimumDate();
+
+
+/* =========================================================
+   DATE CHANGE
+========================================================= */
+
+if (dateInput) {
+
+    dateInput.addEventListener(
+        "change",
+        function () {
+
+            loadAvailableTimes();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CREATE TIME SLOTS
+========================================================= */
+
+function createTimeSlots() {
+
+    const slots = [];
+
+    /*
+       Training hours:
+       08:00 - 18:00
+
+       We create slots every 30 minutes.
+    */
+
+    for (
+        let minutes = 480;
+        minutes <= 1050;
+        minutes += 30
+    ) {
+
+        const hours =
+            Math.floor(
+                minutes / 60
+            );
+
+
+        const mins =
+            minutes % 60;
+
+
+        const time =
+            String(hours)
+                .padStart(2, "0")
+            +
+            ":"
+            +
+            String(mins)
+                .padStart(2, "0");
+
+
+        slots.push({
+
+            time: time,
+
+            minutes: minutes
 
         });
 
-      }
-
-    }
-  );
-
-
-  return {
-
-    success: true,
-
-    date:
-      date,
-
-    bookings:
-      bookings
-
-  };
-
-}
-
-
-/* =========================================================
-   CHECK FOR OVERLAPPING BOOKINGS
-   ========================================================= */
-
-function isTimeBooked(
-
-  date,
-
-  requestedStart,
-
-  requestedEnd
-
-) {
-
-  const spreadsheet =
-    SpreadsheetApp
-      .getActiveSpreadsheet();
-
-
-  const sheet =
-    spreadsheet
-      .getSheetByName(
-        SHEET_NAME
-      );
-
-
-  if (!sheet) {
-
-    throw new Error(
-      'The sheet "' +
-      SHEET_NAME +
-      '" could not be found.'
-    );
-
-  }
-
-
-  const lastRow =
-    sheet.getLastRow();
-
-
-  /*
-     No bookings.
-  */
-
-  if (
-    lastRow <= 1
-  ) {
-
-    return false;
-
-  }
-
-
-  /*
-     Read all bookings.
-  */
-
-  const rows =
-    sheet
-      .getRange(
-
-        2,
-
-        1,
-
-        lastRow - 1,
-
-        14
-
-      )
-      .getValues();
-
-
-  /*
-     Check every booking.
-  */
-
-  for (
-    let i = 0;
-
-    i < rows.length;
-
-    i++
-  ) {
-
-    const row =
-      rows[i];
-
-
-    /*
-       Date is column I.
-    */
-
-    const bookingDate =
-      formatDate(
-        row[8]
-      );
-
-
-    /*
-       Status is column N.
-    */
-
-    const status =
-      String(
-        row[13]
-      )
-      .trim()
-      .toLowerCase();
-
-
-    /*
-       Ignore different dates
-       and cancelled bookings.
-    */
-
-    if (
-      bookingDate !== date ||
-      status === "cancelled"
-    ) {
-
-      continue;
-
     }
 
 
-    /*
-       Start time is column J.
-    */
-
-    const existingStart =
-      timeToMinutes(
-        formatTime(
-          row[9]
-        )
-      );
-
-
-    /*
-       End time is column K.
-    */
-
-    const existingEnd =
-      timeToMinutes(
-        formatTime(
-          row[10]
-        )
-      );
-
-
-    /*
-       OVERLAP TEST
-
-       Example:
-
-       Existing:
-       14:00 - 15:30
-
-       New:
-       15:00 - 16:00
-
-       Result:
-       BLOCKED
-
-       New:
-       15:30 - 16:30
-
-       Result:
-       AVAILABLE
-    */
-
-    if (
-
-      requestedStart <
-      existingEnd
-
-      &&
-
-      requestedEnd >
-      existingStart
-
-    ) {
-
-      return true;
-
-    }
-
-  }
-
-
-  return false;
-
-}
-
-
-/* =========================================================
-   SEND EMAIL NOTIFICATION
-   ========================================================= */
-
-function sendBookingEmail(
-
-  data,
-
-  bookingId,
-
-  endTime
-
-) {
-
-  /*
-     Email subject.
-  */
-
-  const subject =
-    "⚽ New GTM Soccer Academy Booking - " +
-    bookingId;
-
-
-  /*
-     Email message.
-  */
-
-  const body = `
-
-GTM SOCCER ACADEMY
-PRIVATE SOCCER COACHING
-
-================================
-
-NEW BOOKING
-
-Booking Reference:
-${bookingId}
-
-================================
-
-PLAYER INFORMATION
-
-Player Name:
-${data.playerName}
-
-Age:
-${data.age}
-
-================================
-
-PARENT / GUARDIAN
-
-Name:
-${data.parentName}
-
-Phone:
-${data.phone}
-
-================================
-
-TRAINING SESSION
-
-Session:
-${data.session}
-
-Price:
-R${data.price}
-
-================================
-
-APPOINTMENT
-
-Date:
-${data.date}
-
-Time:
-${data.startTime} - ${endTime}
-
-Location:
-${data.location}
-
-================================
-
-PLAYER GOALS / NOTES
-
-${data.message || "No additional notes provided."}
-
-================================
-
-GTM SOCCER ACADEMY
-
-Phone:
-${OWNER_PHONE}
-
-Email:
-${OWNER_EMAIL}
-
-Please contact the parent/guardian to confirm the training session.
-
-Thank you.
-
-GTM Soccer Academy
-`;
-
-
-  /*
-     Send email.
-  */
-
-  MailApp.sendEmail({
-
-    to:
-      OWNER_EMAIL,
-
-    subject:
-      subject,
-
-    body:
-      body
-
-  });
+    return slots;
 
 }
 
 
 /* =========================================================
    GET SESSION DURATION
-   ========================================================= */
+========================================================= */
 
-function getDuration(
-  session
-) {
+function getSessionDuration() {
 
-  const sessionText =
-    String(
-      session
-    )
-    .toLowerCase();
+    const selected =
+        document.querySelector(
+            'input[name="session"]:checked'
+        );
 
 
-  /*
-     1 Hour 30 Minutes
-  */
+    if (!selected) {
 
-  if (
-    sessionText.includes(
-      "1 hour 30"
-    )
-  ) {
+        return 60;
 
-    return 90;
-
-  }
+    }
 
 
-  /*
-     2 Hours
-  */
-
-  if (
-    sessionText.includes(
-      "2 hour"
-    )
-  ) {
-
-    return 120;
-
-  }
+    const session =
+        selected.value;
 
 
-  /*
-     Default:
-     1 Hour
-  */
+    if (
+        session.includes(
+            "1 Hour 30"
+        )
+    ) {
 
-  return 60;
+        return 90;
+
+    }
+
+
+    if (
+        session.includes(
+            "2 Hours"
+        )
+    ) {
+
+        return 120;
+
+    }
+
+
+    return 60;
 
 }
 
 
 /* =========================================================
    CONVERT TIME TO MINUTES
-   ========================================================= */
+========================================================= */
 
-function timeToMinutes(
-  time
+function convertTimeToMinutes(
+    time
 ) {
 
-  if (!time) {
+    const parts =
+        time.split(":");
 
-    throw new Error(
-      "Invalid time."
+
+    return (
+        parseInt(parts[0], 10) * 60
+        +
+        parseInt(parts[1], 10)
     );
-
-  }
-
-
-  const parts =
-    String(time)
-      .split(":");
-
-
-  if (
-    parts.length < 2
-  ) {
-
-    throw new Error(
-      "Invalid time format: " +
-      time
-    );
-
-  }
-
-
-  const hours =
-    parseInt(
-      parts[0],
-      10
-    );
-
-
-  const minutes =
-    parseInt(
-      parts[1],
-      10
-    );
-
-
-  return (
-    hours * 60 +
-    minutes
-  );
 
 }
 
 
 /* =========================================================
-   CONVERT MINUTES TO TIME
-   ========================================================= */
+   LOAD AVAILABLE TIMES
+========================================================= */
 
-function minutesToTime(
-  minutes
-) {
+async function loadAvailableTimes() {
 
-  const hours =
-    Math.floor(
-      minutes / 60
-    );
+    if (!dateInput || !timeSelect) {
 
+        return;
 
-  const mins =
-    minutes % 60;
+    }
 
 
-  return (
+    const selectedDate =
+        dateInput.value;
 
-    String(hours)
-      .padStart(2, "0")
 
-    +
+    if (!selectedDate) {
 
-    ":"
+        timeSelect.innerHTML = `
 
-    +
+            <option value="">
+                Select a date first
+            </option>
 
-    String(mins)
-      .padStart(2, "0")
+        `;
 
-  );
+        return;
+
+    }
+
+
+    /*
+       Make sure a session
+       has been selected.
+    */
+
+    const selectedSessionRadio =
+        document.querySelector(
+            'input[name="session"]:checked'
+        );
+
+
+    if (!selectedSessionRadio) {
+
+        timeSelect.innerHTML = `
+
+            <option value="">
+                Select a training session first
+            </option>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+       Show loading message.
+    */
+
+    timeSelect.innerHTML = `
+
+        <option value="">
+            Checking available times...
+        </option>
+
+    `;
+
+
+    try {
+
+        const url =
+            SCRIPT_URL
+            +
+            "?action=availability&date="
+            +
+            encodeURIComponent(
+                selectedDate
+            );
+
+
+        const response =
+            await fetch(url);
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            !result.success
+        ) {
+
+            throw new Error(
+                result.message ||
+                "Could not load availability."
+            );
+
+        }
+
+
+        const bookings =
+            result.bookings || [];
+
+
+        const duration =
+            getSessionDuration();
+
+
+        const slots =
+            createTimeSlots();
+
+
+        /*
+           Clear time selector.
+        */
+
+        timeSelect.innerHTML = `
+
+            <option value="">
+                Select available time
+            </option>
+
+        `;
+
+
+        let availableCount =
+            0;
+
+
+        slots.forEach(
+            function (slot) {
+
+                const start =
+                    slot.minutes;
+
+
+                const end =
+                    start + duration;
+
+
+                /*
+                   Training cannot finish
+                   after 18:00.
+                */
+
+                if (
+                    end > 1080
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                   Check existing bookings.
+                */
+
+                const conflict =
+                    bookings.some(
+                        function (booking) {
+
+                            return (
+
+                                start <
+                                booking.end
+
+                                &&
+
+                                end >
+                                booking.start
+
+                            );
+
+                        }
+                    );
+
+
+                if (!conflict) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        slot.time;
+
+
+                    option.textContent =
+                        formatDisplayTime(
+                            slot.time
+                        );
+
+
+                    timeSelect.appendChild(
+                        option
+                    );
+
+
+                    availableCount++;
+
+                }
+
+            }
+        );
+
+
+        if (
+            availableCount === 0
+        ) {
+
+            timeSelect.innerHTML = `
+
+                <option value="">
+                    No available times for this date
+                </option>
+
+            `;
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Availability error:",
+            error
+        );
+
+
+        timeSelect.innerHTML = `
+
+            <option value="">
+                Unable to load times
+            </option>
+
+        `;
+
+    }
 
 }
 
 
 /* =========================================================
-   FORMAT TIME FROM GOOGLE SHEETS
-   ========================================================= */
+   FORMAT TIME FOR DISPLAY
+========================================================= */
 
-function formatTime(
-  value
+function formatDisplayTime(
+    time
 ) {
 
-  /*
-     Google Sheets may return
-     a Date object.
-  */
+    const parts =
+        time.split(":");
 
-  if (
-    value instanceof Date
-  ) {
 
-    return Utilities.formatDate(
+    let hours =
+        parseInt(
+            parts[0],
+            10
+        );
 
-      value,
 
-      Session.getScriptTimeZone(),
+    const minutes =
+        parts[1];
 
-      "HH:mm"
 
+    const period =
+        hours >= 12
+            ? "PM"
+            : "AM";
+
+
+    if (hours === 0) {
+
+        hours = 12;
+
+    } else if (hours > 12) {
+
+        hours -= 12;
+
+    }
+
+
+    return (
+        hours
+        +
+        ":"
+        +
+        minutes
+        +
+        " "
+        +
+        period
     );
 
-  }
+}
 
 
-  /*
-     Otherwise return text.
-  */
+/* =========================================================
+   FORM SUBMISSION
+========================================================= */
 
-  return String(
+if (bookingForm) {
+
+    bookingForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            /*
+               Find submit button.
+            */
+
+            const submitButton =
+                bookingForm.querySelector(
+                    ".submit-btn"
+                );
+
+
+            /*
+               Make sure a session
+               is selected.
+            */
+
+            const selectedSessionRadio =
+                document.querySelector(
+                    'input[name="session"]:checked'
+                );
+
+
+            if (!selectedSessionRadio) {
+
+                alert(
+                    "Please select a training session."
+                );
+
+                return;
+
+            }
+
+
+            /*
+               Make sure time is selected.
+            */
+
+            if (
+                !timeSelect.value
+            ) {
+
+                alert(
+                    "Please select an available training time."
+                );
+
+                return;
+
+            }
+
+
+            /*
+               Get price.
+            */
+
+            const price =
+                selectedSessionRadio.dataset.price;
+
+
+            /*
+               Prevent duplicate clicks.
+            */
+
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.innerHTML = `
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Sending Booking...
+
+                `;
+
+            }
+
+
+            /*
+               Build booking data.
+            */
+
+            const bookingData = {
+
+                /* Parent */
+
+                parentName:
+                    document
+                        .getElementById(
+                            "parentName"
+                        )
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById(
+                            "phone"
+                        )
+                        .value
+                        .trim(),
+
+
+                /* Player */
+
+                playerName:
+                    document
+                        .getElementById(
+                            "playerName"
+                        )
+                        .value
+                        .trim(),
+
+                age:
+                    document
+                        .getElementById(
+                            "age"
+                        )
+                        .value,
+
+
+                /* Session */
+
+                session:
+                    selectedSessionRadio.value,
+
+                price:
+                    price,
+
+
+                /* Appointment */
+
+                date:
+                    dateInput.value,
+
+                startTime:
+                    timeSelect.value,
+
+                location:
+                    document
+                        .getElementById(
+                            "location"
+                        )
+                        .value,
+
+
+                /* Goals */
+
+                message:
+                    document
+                        .getElementById(
+                            "message"
+                        )
+                        .value
+                        .trim(),
+
+
+                /* =================================================
+                   HEALTH & WELLBEING
+                ================================================= */
+
+                wellbeing:
+                    document
+                        .getElementById(
+                            "wellbeing"
+                        )
+                        .value,
+
+
+                injury:
+                    document
+                        .getElementById(
+                            "injury"
+                        )
+                        .value,
+
+
+                injuryDetails:
+                    document
+                        .getElementById(
+                            "injuryDetails"
+                        )
+                        .value
+                        .trim(),
+
+
+                recentActivity:
+                    document
+                        .getElementById(
+                            "recentActivity"
+                        )
+                        .value,
+
+
+                importantInfo:
+                    document
+                        .getElementById(
+                            "importantInfo"
+                        )
+                        .value
+                        .trim(),
+
+
+                allergies:
+                    document
+                        .getElementById(
+                            "allergies"
+                        )
+                        .value
+                        .trim(),
+
+
+                /* Emergency contact */
+
+                emergencyName:
+                    document
+                        .getElementById(
+                            "emergencyName"
+                        )
+                        .value
+                        .trim(),
+
+
+                emergencyPhone:
+                    document
+                        .getElementById(
+                            "emergencyPhone"
+                        )
+                        .value
+                        .trim(),
+
+
+                relationship:
+                    document
+                        .getElementById(
+                            "relationship"
+                        )
+                        .value
+
+            };
+
+
+            try {
+
+                /*
+                   Send booking to
+                   Google Apps Script.
+                */
+
+                const response =
+                    await fetch(
+                        SCRIPT_URL,
+                        {
+
+                            method:
+                                "POST",
+
+                            body:
+                                JSON.stringify(
+                                    bookingData
+                                )
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                /*
+                   Booking failed.
+                */
+
+                if (
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.message ||
+                        "Booking could not be completed."
+                    );
+
+                }
+
+
+                /*
+                   Show confirmation.
+                */
+
+                showConfirmation(
+
+                    bookingData,
+
+                    result
+
+                );
+
+
+                /*
+                   Reset form.
+                */
+
+                bookingForm.reset();
+
+
+                /*
+                   Reset summary.
+                */
+
+                updateSessionSummary();
+
+
+                /*
+                   Reset time selector.
+                */
+
+                timeSelect.innerHTML = `
+
+                    <option value="">
+                        Select a date first
+                    </option>
+
+                `;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Booking error:",
+                    error
+                );
+
+
+                alert(
+                    "Sorry, your booking could not be submitted.\n\n"
+                    +
+                    error.message
+                    +
+                    "\n\nPlease contact GTM Soccer Academy on +27 62 242 2996."
+                );
+
+
+            } finally {
+
+                /*
+                   Restore button.
+                */
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.innerHTML = `
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        Request Booking
+
+                    `;
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SHOW CONFIRMATION
+========================================================= */
+
+function showConfirmation(
+    bookingData,
+    result
+) {
+
+    if (!successModal) {
+
+        return;
+
+    }
+
+
+    confirmationDetails.innerHTML = `
+
+        <div class="confirmation-row">
+
+            <span>
+                Booking Reference
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    result.bookingId
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="confirmation-row">
+
+            <span>
+                Player
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    bookingData.playerName
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="confirmation-row">
+
+            <span>
+                Session
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    bookingData.session
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="confirmation-row">
+
+            <span>
+                Date
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    bookingData.date
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="confirmation-row">
+
+            <span>
+                Time
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    formatDisplayTime(
+                        bookingData.startTime
+                    )
+                    +
+                    " - "
+                    +
+                    formatDisplayTime(
+                        result.endTime
+                    )
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="confirmation-row">
+
+            <span>
+                Location
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    bookingData.location
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="confirmation-row">
+
+            <span>
+                Price
+            </span>
+
+            <strong>
+                R${escapeHTML(
+                    bookingData.price
+                )}
+            </strong>
+
+        </div>
+
+
+        <p class="confirmation-message">
+
+            Your booking request has been received.
+            GTM Soccer Academy will contact you if
+            further confirmation is required.
+
+        </p>
+
+    `;
+
+
+    successModal.classList.add(
+        "active"
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(
     value
-  );
-
-}
-
-
-/* =========================================================
-   FORMAT DATE FROM GOOGLE SHEETS
-   ========================================================= */
-
-function formatDate(
-  value
 ) {
 
-  /*
-     Google Sheets may return
-     a Date object.
-  */
-
-  if (
-    value instanceof Date
-  ) {
-
-    return Utilities.formatDate(
-
-      value,
-
-      Session.getScriptTimeZone(),
-
-      "yyyy-MM-dd"
-
-    );
-
-  }
+    const div =
+        document.createElement(
+            "div"
+        );
 
 
-  /*
-     Otherwise return text.
-  */
+    div.textContent =
+        value == null
+            ? ""
+            : String(value);
 
-  return String(
-    value
-  );
+
+    return div.innerHTML;
 
 }
 
 
 /* =========================================================
-   GENERATE BOOKING REFERENCE
-   ========================================================= */
+   CLOSE SUCCESS MODAL
+========================================================= */
 
-function generateBookingId() {
+function closeSuccessModal() {
 
-  const randomNumber =
-    Math.floor(
+    if (successModal) {
 
-      100000 +
+        successModal.classList.remove(
+            "active"
+        );
 
-      Math.random() *
-      900000
+    }
 
+}
+
+
+if (closeModal) {
+
+    closeModal.addEventListener(
+        "click",
+        closeSuccessModal
     );
 
+}
 
-  return (
-    "GTM-" +
-    randomNumber
-  );
+
+if (modalDone) {
+
+    modalDone.addEventListener(
+        "click",
+        closeSuccessModal
+    );
+
+}
+
+
+/* Close modal when clicking outside */
+
+if (successModal) {
+
+    successModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target ===
+                successModal
+            ) {
+
+                closeSuccessModal();
+
+            }
+
+        }
+    );
 
 }
 
 
 /* =========================================================
-   RETURN JSON RESPONSE
-   ========================================================= */
+   INITIALISE
+========================================================= */
 
-function jsonResponse(
-  data
-) {
-
-  return ContentService
-
-    .createTextOutput(
-
-      JSON.stringify(
-        data
-      )
-
-    )
-
-    .setMimeType(
-
-      ContentService.MimeType.JSON
-
-    );
-
-}
+updateSessionSummary();
