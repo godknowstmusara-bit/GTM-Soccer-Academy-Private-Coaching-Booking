@@ -2323,3 +2323,80 @@ section {
     }
 
 }
+/* =========================================================
+   COACH SKILLS SHOWCASE
+========================================================= */
+
+.coach-videos {
+    padding: 100px 0;
+    background: #f5f7fa;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    max-width: 850px;
+    margin: 50px auto 0;
+}
+
+.video-card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.10);
+}
+
+.video-wrapper {
+    width: 100%;
+    background: #000000;
+}
+
+.video-wrapper video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+}
+
+.video-content {
+    padding: 25px;
+}
+
+.video-content h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.video-content p {
+    margin: 0;
+    line-height: 1.7;
+    color: #666666;
+}
+
+.video-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.video-cta p {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+
+    .coach-videos {
+        padding: 70px 0;
+    }
+
+    .video-card {
+        border-radius: 15px;
+    }
+
+    .video-content {
+        padding: 20px;
+    }
+
+}
